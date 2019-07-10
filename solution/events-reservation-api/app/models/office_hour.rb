@@ -5,5 +5,8 @@
 class OfficeHour < Event
   # An Office Hour, where during a time frame
   #  individual people can attend (in serial)
-  validates :max_participants, equal_to: 1
+  validates :max_participants, numericality: {
+    only_integer: true,
+    equal_to: 1
+  }
 end
