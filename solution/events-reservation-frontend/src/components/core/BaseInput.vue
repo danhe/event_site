@@ -3,37 +3,60 @@
     class="base-input"
     :class="`base-input-${$attrs.type}`"
   >
-    <label 
-      class="label-title"
-      v-if="label"
-    >
-      {{ label }}
-      <span 
-        class="required-text"
-        v-if="requiredOption"
-      >
-        *
-      </span>
-    </label>
+    <BaseLabel 
+      :label="label"
+      theme="important"
+      :requiredOption="requiredOption"
+    />
 
-    <input 
+    <DatePicker
+      v-if="isADateInput"
+      :value="value"
+      lang="en" 
+      type="datetime" 
+      :required="requiredOption"
+      format="MM-DD-YYYY [at] HH:mm"
+      :not-before="notBefore"
+      @input="handleDatepickerInput"
+    />
+
+    <input
+      v-else
       class="base-input"
       v-bind="$attrs"
       v-on="$listeners"
-      @input="$emit('input', $event.target.value)"
+      :value="value"
+      :required="requiredOption"
+      @input="handleInput"
     />
 
-    <label v-if="labelText">
-      {{ labelText }}
-    </label>
+    <BaseLabel 
+      v-if="labelText"
+      :label="option.value"
+    />
   </div>
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker'
+
+import BaseLabel from '@/components/core/BaseLabel.vue'
+
 export default {
   name: 'BaseInput',
   inheritAttrs: false,
+  model: {
+    event: 'update',
+  },
+  components: {
+    BaseLabel,
+    DatePicker,
+  },
   props: {
+    value: {
+      type: [String, Number, Date, Object] ,
+      default: '',
+    },
     label: {
       type: String,
       default: null,
@@ -46,33 +69,39 @@ export default {
       type: Boolean,
       default: false,
     },
+    notBefore: {
+      type: Date,
+      default: null,
+    },
+  },
+  computed: {
+    /**
+     * If is an input with datetime type
+     */
+    isADateInput() {
+      const { type } = this.$attrs
+      return type === 'datetime-local'
+    },
+  },
+  methods: {
+    /**
+     * Callback method for input event
+     */
+    handleInput($event) {
+      this.$emit('update', $event.target.value)
+    },
+    /**
+     * Callback method of input event for datetimepicker
+     */
+    handleDatepickerInput(currentValue){
+      this.$emit('update', currentValue)
+    },
   },
 }
 </script>
 
 <style lang="stylus" scoped>
   .base-input {
-
-    &.base-input-radio {
-      display: inline-block
-      margin-right: 10px
-    }
-
-    label {
-      font-size: .8em
-      color: var(--color-black)
-  
-      &.label-title {
-        color: var(--color-action)
-        display: block    
-      }
-
-      .required-text {
-        display: inline-block
-        color: var(--color-negative)
-      }
-    }
-
     input {
       display: block
       width: 100%

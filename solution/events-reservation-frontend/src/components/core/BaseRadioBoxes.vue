@@ -1,29 +1,48 @@
 <template>
   <div class="base-radio-boxes">
-    <BaseInput
+    <BaseLabel 
+      :label="label"
+      theme="important"
+    />
+
+    <div
+      class="base-radio"
       v-for="(option, index) in options"
       :key="index"
-      type="radio"
-      name="event_type"
-      :label="index== 0 ? label : null"
-      :requiredOption="true"
-      :value="option.value"
-      :label-text="option.text"
-      :checked="option.checked"
-    />
+    >
+      <input
+        id="`radio_${index}`"
+        type="radio"
+        :name="name"
+        :value="option.value"
+        :checked="option.checked"
+        @change="handleRadioChange"
+      />
+
+      <BaseLabel 
+        :label="option.value"
+        display="inline-block"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import BaseInput from '@/components/core/BaseInput.vue'
+import BaseLabel from '@/components/core/BaseLabel.vue'
 
 export default {
   name: 'BaseRadioBoxes',
-  inheritAttrs: false,
+  model: {
+    event: 'update',
+  },
   components: {
-    BaseInput,
+    BaseLabel,
   },
   props: {
+    value: {
+      type: String,
+      default: null,
+    },
     label: {
       type: String,
       default: null,
@@ -36,10 +55,21 @@ export default {
       type: String,
       required: true,
     },
-    requiredOption: {
-      type: Boolean,
-      default: false,
+  },
+  methods: {
+    handleRadioChange($event) {
+      this.$emit('update', $event.target.value)
     },
   },
 }
 </script>
+
+<style lang="stylus" scoped>
+.base-radio-boxes {
+  .base-radio {
+    display: inline-block
+    margin-right: 10px
+  }
+}
+</style>
+
