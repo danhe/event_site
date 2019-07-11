@@ -12,11 +12,13 @@
             name="event_type"
             :requiredOption="true"
             :options="eventTypeOptions"
+            v-model="type"
           />
         </div>
 
         <div class="form-group">
           <BaseInput 
+            v-model="name"
             label="Event Name"
             placeholder="Event name"
             :requiredOption="true"
@@ -25,6 +27,7 @@
 
         <div class="form-group">
           <BaseInput 
+            v-model="start_time"
             label="Event's start time"
             placeholder="Event's start time"
             type="datetime-local"
@@ -33,7 +36,8 @@
         </div>
 
         <div class="form-group">
-          <BaseInput 
+          <BaseInput
+            v-model="end_time"
             label="Event's end time"
             placeholder="Event's end time"
             type="datetime-local"
@@ -41,10 +45,29 @@
           />
         </div>
 
-        <div class="form-check">
+        <div class="form-group">
           <BaseInput 
-            labelAfter="Check me out"
-            type="checkbox"
+            v-model="speaker"
+            label="Speaker"
+            placeholder="Speaker"
+          />
+        </div>
+
+        <div class="form-group">
+          <BaseInput 
+            v-model="location"
+            label="Location"
+            placeholder="Location"
+          />
+        </div>
+
+        <div class="form-group">
+          <BaseInput 
+            v-model="max_participants"
+            type="number"
+            label="Maxium participants"
+            placeholder="Maxium participants"
+            min="1"
           />
         </div>
 
@@ -82,6 +105,15 @@ export default {
           text: 'Office Hour',
         },
       ],
+      // Event creation params
+      type: '',
+      name: '',
+      start_time: '',
+      end_time: '',
+      speaker: '',
+      location: '',
+      description: '',
+      max_participants: 1,
     }
   },
 }

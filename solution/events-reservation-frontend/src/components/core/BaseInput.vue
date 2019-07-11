@@ -20,6 +20,7 @@
       class="base-input"
       v-bind="$attrs"
       v-on="$listeners"
+      @input="$emit('input', $event.target.value)"
     />
 
     <label v-if="labelText">
