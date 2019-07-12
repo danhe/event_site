@@ -105,6 +105,12 @@
         </div>
 
         <div class="form-button">
+          <BaseButton theme="secondary">
+             <router-link to="/events">
+              Cancel
+            </router-link>
+          </BaseButton>
+
           <BaseButton 
             type="submit"
           >
@@ -118,6 +124,7 @@
 
 <script>
 import _filter from 'lodash/filter'
+import { mapGetters } from 'vuex'
 
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
@@ -176,6 +183,12 @@ export default {
       max_max_participants: MAX_NUMBER,
     }
   },
+  computed: {
+    ...mapGetters({
+      errors: 'storedErrors',
+      messages: 'storedMessages',
+    }),
+  },
   methods: {
     /**
      * Update start time and update the min end time
@@ -233,18 +246,18 @@ export default {
      * @param {String} key of input
      */
     hasErrorInput(key) {
-      const { notifications } = this
+      const { errors } = this
 
-      return notifications.errors.map(error => error.pointer).includes(key)
+      return errors.map(error => error.pointer).includes(key)
     },
     /**
      * Error messages for input
      * @param {String} key of input
      */
     errorsOfInput(key) {
-      const { notifications } = this
+      const { errors } = this
 
-      const errorsObject = _filter(notifications.errors, (error) => { 
+      const errorsObject = _filter(errors, (error) => { 
         return error.pointer === key
       })
 

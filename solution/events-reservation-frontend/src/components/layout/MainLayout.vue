@@ -3,11 +3,29 @@
     <nav>
       <div class="nav-line">
         <aside class="nav-left">
-          <router-link to="/">
+          <router-link 
+            class="nav-link"
+            to="/events"
+          >
             <h1>
               ፸ <span>Events Reservation</span>
             </h1>
           </router-link>
+
+          <router-link 
+            class="nav-link"
+            to="/"
+          >
+            About?
+          </router-link>
+        </aside>
+
+        <aside class="nav-right">
+          <BaseButton>
+            <router-link to="/events/new">
+              Create an event
+            </router-link>
+          </BaseButton>
         </aside>
       </div>
     </nav>
@@ -19,8 +37,13 @@
 </template>
 
 <script>
+import BaseButton from '@/components/core/BaseButton.vue'
+
 export default {
   name: 'MainLayout',
+  components: {
+    BaseButton,
+  },
 }
 </script>
 
@@ -44,6 +67,16 @@ export default {
 
           &.nav-left {
             padding: 10px
+
+            .nav-link {
+              display: inline-block
+              margin-right: 10px
+            }
+          }
+
+          &.nav-right {
+            padding-top: 12px
+            float: right
           }
         }
       }
