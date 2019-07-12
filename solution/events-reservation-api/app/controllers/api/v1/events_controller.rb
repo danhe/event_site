@@ -6,7 +6,8 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   # GET /api/v1/characters
   def index
-    render json: @event, each_serializer: Api::V1::EventSerializer, status: :ok
+    render json: { events: @event },
+           each_serializer: Api::V1::EventSerializer, status: :ok
   end
 
   # POST /api/v1/events

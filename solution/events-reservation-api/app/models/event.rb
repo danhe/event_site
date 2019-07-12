@@ -14,6 +14,11 @@ class Event < ApplicationRecord
   validate :event_must_during_in_a_24hr_day,
            :start_time_must_before_end_time
 
+  # Make sure the type is in the json 
+  def serializable_hash(options = nil)
+    super.merge(type: type)
+  end
+
   private
 
   # Validation methode
