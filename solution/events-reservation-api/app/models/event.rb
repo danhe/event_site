@@ -3,8 +3,8 @@
 # Event class, which is the main model of application
 # It permet only some participants to attend with some attributes
 class Event < ApplicationRecord
-  IN_THE_SAME_DAY_MSG = 'and end time of event must be in a same day'
-  VALID_DURATION_MSG = 'must be a time before the end time of event. ' +
+  IN_THE_SAME_DAY_MSG = 'Start time and end time of event must be in a same day'
+  VALID_DURATION_MSG = 'End time must be a time after the start time of event. ' +
                        'We need a valid duration of event'
   EVENT_TYPE_MSG = 'Only WorkShop and OfficeHour as event type are allowed'
 
@@ -29,6 +29,6 @@ class Event < ApplicationRecord
   def start_time_must_before_end_time
     return if !start_time.nil? && !end_time.nil? && end_time > start_time
 
-    errors.add(:start_time, VALID_DURATION_MSG)
+    errors.add(:end_time, VALID_DURATION_MSG)
   end
 end

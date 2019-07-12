@@ -44,9 +44,7 @@ class Api::V1::ErrorSerializer < ActiveModel::Serializer
         status: @status,
         title: normalize_title(error),
         detail: normalize_error(error),
-        source: {
-          pointer: error_pointer(error)
-        }
+        pointer: error_pointer(error)
       }
     end
   end
@@ -88,7 +86,7 @@ class Api::V1::ErrorSerializer < ActiveModel::Serializer
     end
 
     def pointer
-      "data/attributes/#{@key}"
+      @key
     end
   end
 end

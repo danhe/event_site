@@ -12,11 +12,10 @@ class Api::V1::EventsController < Api::V1::BaseController
   # POST /api/v1/events
   def create
     if @event.save
-      render json: @event,
-             serializer: Api::V1::EventSerializer,
+      render json: { message: "The event #{@event.name} has been created successfully."},
              status: 201
     else
-      invalid_resource!(@event.errors.full_messages)
+      invalid_resource!(@event.errors)
     end
   end
 
