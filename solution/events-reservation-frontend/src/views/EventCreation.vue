@@ -1,19 +1,21 @@
 <template>
-  <div class="events-creation">
+  <div class="event-creation">
     <h1 class="title important-text">
       Reserve your events
     </h1>
 
     <div class="form">
-      <form>
+      <form @submit="onCreateEvent">
         <div class="form-group">
           <BaseRadioBoxes
-            v-model="type"
+            v-model="event.type"
             label="Event type"
             name="type"
             :requiredOption="true"
             :options="eventTypeOptions"
             @update="changeEventType"
+            :hasError="hasErrorInput('type')"
+            :errorMessage="errorsOfInput('type')"
           />
         </div>
 
@@ -23,32 +25,38 @@
             label="Event Name"
             placeholder="Event name"
             :requiredOption="true"
+            :hasError="hasErrorInput('name')"
+            :errorMessage="errorsOfInput('name')"
           />
         </div>
 
         <div class="form-group">
           <BaseInput
-            v-model="start_time"
+            v-model="event.start_time"
             id="start_time_picker"
             label="Event's start time"
             placeholder="Event's start time"
             type="datetime-local"
             :requiredOption="true"
-            :not-before="start_time"
+            :not-before="event.start_time"
             @update="updateStartTime"
+            :hasError="hasErrorInput('start_time')"
+            :errorMessage="errorsOfInput('start_time')"
           />
         </div>
 
         <div class="form-group">
           <BaseInput
-            v-model="end_time"
+            v-model="event.end_time"
             id="end_time_picker"
             label="Event's end time"
             placeholder="Event's end time"
             type="datetime-local"
             :requiredOption="true"
-            :not-before="start_time"
+            :not-before="event.start_time"
             :not-after="end_time_not_after"
+            :hasError="hasErrorInput('end_time')"
+            :errorMessage="errorsOfInput('end_time')"
           />
         </div>
 
@@ -57,6 +65,8 @@
             v-model="event.speaker"
             label="Speaker"
             placeholder="Speaker"
+            :hasError="hasErrorInput('speaker')"
+            :errorMessage="errorsOfInput('speaker')"
           />
         </div>
 
@@ -65,6 +75,8 @@
             v-model="event.location"
             label="Location"
             placeholder="Location"
+            :hasError="hasErrorInput('location')"
+            :errorMessage="errorsOfInput('location')"
           />
         </div>
 
@@ -76,11 +88,26 @@
             placeholder="Maxium participants"
             min="1"
             :max="max_max_participants"
+            :hasError="hasErrorInput('max_participants')"
+            :errorMessage="errorsOfInput('max_participants')"
+          />
+        </div>
+
+        <div class="form-group">
+          <BaseInput
+            v-model="event.description"
+            input-component='textarea'
+            label="Description"
+            placeholder="Description"
+            :hasError="hasErrorInput('description')"
+            :errorMessage="errorsOfInput('description')"
           />
         </div>
 
         <div class="form-button">
-          <BaseButton>
+          <BaseButton 
+            type="submit"
+          >
             Create
           </BaseButton>
         </div>
@@ -90,21 +117,27 @@
 </template>
 
 <script>
+import _filter from 'lodash/filter'
+
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import BaseRadioBoxes from '@/components/core/BaseRadioBoxes.vue'
+import EventMixin from '@/mixins/EventMixin.vue'
 
 const WORK_SHOP = 'WorkShop'
 const OFFICE_HOUR = 'OfficeHour'
 const MAX_NUMBER = 9999999
 
 export default {
-  name: 'events-creation',
+  name: 'EventCreation',
   components: {
     BaseButton,
     BaseInput,
     BaseRadioBoxes,
   },
+  mixins: [
+    EventMixin,
+  ],
   data() {
     const NOW = new Date()
 
@@ -125,10 +158,10 @@ export default {
         location: '',
         description: '',
         max_participants: 1,
+        type: 'WorkShop',
+        start_time: NOW,
+        end_time: NOW,
       },
-      type: 'WorkShop',
-      start_time: NOW,
-      end_time: NOW,
       end_time_not_after: NOW,
       /**
        * Max possible participants when workshop
@@ -158,6 +191,9 @@ export default {
     getEndOfDate(date) {
       return new Date(date.setHours(23, 59, 59, 999))
     },
+    /**
+     * When changing event type, update the max partipant number
+     */
     changeEventType(type) {
       this.type = type
 
@@ -169,12 +205,43 @@ export default {
         this.max_max_participants = MAX_NUMBER
       }
     },
+    /**
+     * When clicking on create button
+     *  create a new event
+     */
+    async onCreateEvent($event) {
+      $event.preventDefault()
+
+      const { event, createEvent } = this
+
+      await createEvent(event)
+    },
+    /**
+     * Check if the input with key has an error
+     */
+    hasErrorInput(key) {
+      const { notifications } = this
+
+      return notifications.errors.map(error => error.pointer).includes(key)
+    },
+    /**
+     * Error messages for input
+     */
+    errorsOfInput(key) {
+      const { notifications } = this
+
+      const errorsObject = _filter(notifications.errors, (error) => { 
+        return error.pointer === key
+      })
+
+      return errorsObject.map(error => error.detail).join('<br/>')
+    },
   },
 }
 </script>
 
 <style lang="stylus" scoped>
-  .events-creation {
+  .event-creation {
     .title {
       text-align: center
       margin-bottom: 20px

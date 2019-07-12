@@ -20,7 +20,7 @@
 import BaseButton from '@/components/core/BaseButton.vue'
 
 export default {
-  name: 'events',
+  name: 'EventsList',
   components: {
     BaseButton,
   },

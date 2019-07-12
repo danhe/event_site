@@ -1,7 +1,6 @@
 <template>
   <div 
-    class="base-input"
-    :class="`base-input-${$attrs.type}`"
+    :class="[hasError ? 'error-input' : 'normal-input', 'base-input', `base-input-${$attrs.type}`]"
   >
     <BaseLabel 
       :label="label"
@@ -20,9 +19,10 @@
       @input="handleDatepickerInput"
     />
 
-    <input
+    <component
       v-else
       class="base-input"
+      :is="inputComponent"
       v-bind="$attrs"
       v-on="$listeners"
       :value="value"
@@ -33,6 +33,12 @@
     <BaseLabel 
       v-if="labelText"
       :label="option.value"
+    />
+
+    <BaseLabel 
+      v-if="errorMessage"
+      theme="negative"
+      :label="errorMessage"
     />
   </div>
 </template>
@@ -53,25 +59,61 @@ export default {
     DatePicker,
   },
   props: {
+    /**
+     * Default value of input/textarea
+     */
     value: {
       type: [String, Number, Date, Object] ,
       default: '',
     },
+    /**
+     * Display label of input
+     */
     label: {
       type: String,
       default: null,
     },
+    /**
+     * Checkbox/Radio label
+     */
     labelText: {
       type: String,
       default: null,
     },
+    /**
+     * If is a required input
+     */
     requiredOption: {
       type: Boolean,
       default: false,
     },
+    /**
+     * Specifical attribute for datetime-local
+     */
     notBefore: {
       type: Date,
       default: null,
+    },
+    /**
+     * If having an error in input
+     */
+    hasError: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Error messages for the input
+     */
+    errorMessage: {
+      type: String,
+      default: null,
+    },
+    /**
+     * Component name: input or textarea
+     */
+    inputComponent: {
+      type: String,
+      default: 'input'
     },
   },
   computed: {
@@ -102,16 +144,26 @@ export default {
 
 <style lang="stylus" scoped>
   .base-input {
-    input {
+    &.error-input{
+
+      textarea, input, >>> .mx-input {
+        border: 1px solid var(--color-negative)
+      }
+    }
+
+    &.normal-input input,  &.normal-input textarea{
+      border: 1px solid var(--color-grey)
+    }
+
+    input, textarea {
       display: block
       width: 100%
       padding: .375rem .75rem
       font-size: 1rem
       line-height: 1.5
-      color: #495057
-      background-color: #fff
+      color: var(--color-black)
+      background-color: var(--color-white)
       background-clip: padding-box
-      border: 1px solid #ced4da
       border-radius: .25rem
       transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out
 

@@ -50,6 +50,10 @@ export default {
       color: var(--color-action)
     }
 
+    &.label-negative {
+      color: var(--color-negative)
+    }
+
     &.label-block {
       display: block
     }
