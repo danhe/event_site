@@ -28,7 +28,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   def load_resource
     case params[:action].to_sym
     when :index
-      @event = Event.all
+      @event = events_by_params
     when :create
       @event = Event.new(create_params)
     end
@@ -36,6 +36,21 @@ class Api::V1::EventsController < Api::V1::BaseController
     api_error(status: :unprocessable_entity, errors: Event::EVENT_TYPE_MSG)
   rescue ActiveRecord::RecordNotFound
     not_found!
+  end
+
+  def events_by_params
+    return Event.all if params[:text].blank?
+
+    if params[:by].to_sym == :date
+      datetime = params[:text].to_date
+      return Event.all.where(
+        'start_time >= ? AND end_time <= ?',
+        datetime.beginning_of_day,
+        datetime.end_of_day
+      )
+    end
+
+    Event.all.where("#{params[:by]} LIKE ?", "%#{params[:text]}%")
   end
 
   def create_params
