@@ -11,6 +11,10 @@
         So Frontend part is a VueJS based project and API part is a RubyOnRails based project.
       </li>
       <li>
+        Level1: I created a EventMixin to control the axios call and make the gestion of reponse centralized 
+        in the mixin.
+      </li>
+      <li>
         Coming soon...
       </li>
     </ul>

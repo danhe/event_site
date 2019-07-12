@@ -142,7 +142,9 @@ export default {
     const NOW = new Date()
 
     return {
-      //Event type options
+      /**
+       * Event type radio options
+       */
       eventTypeOptions: [
         {
           value: WORK_SHOP,
@@ -151,7 +153,9 @@ export default {
           value: OFFICE_HOUR,
         },
       ],
-      // Event creation params
+      /**
+       * Event creation params
+       */
       event: {
         name: '',
         speaker: '',
@@ -162,6 +166,9 @@ export default {
         start_time: NOW,
         end_time: NOW,
       },
+      /**
+       * End time not after date indicator
+       */
       end_time_not_after: NOW,
       /**
        * Max possible participants when workshop
@@ -172,9 +179,10 @@ export default {
   methods: {
     /**
      * Update start time and update the min end time
+     * @param {Date} selected_time of datetime picker
      */
     updateStartTime(selected_time) {
-      const { getEndOfDate } = this
+      // const { getEndOfDate } = this
 
       this.start_time = selected_time
 
@@ -183,16 +191,19 @@ export default {
         this.end_time = this.start_time
       }
 
+      // todo
       // this.end_time_not_after = getEndOfDate(selected_time)
     },
     /**
-     * Get endday of a date 
+     * Get end day of a date 
+     * @param {Date} date to calculate
      */
     getEndOfDate(date) {
       return new Date(date.setHours(23, 59, 59, 999))
     },
     /**
      * When changing event type, update the max partipant number
+     * @param {String} type of event
      */
     changeEventType(type) {
       this.type = type
@@ -208,6 +219,7 @@ export default {
     /**
      * When clicking on create button
      *  create a new event
+     * @param {Event} $event submit of form
      */
     async onCreateEvent($event) {
       $event.preventDefault()
@@ -218,6 +230,7 @@ export default {
     },
     /**
      * Check if the input with key has an error
+     * @param {String} key of input
      */
     hasErrorInput(key) {
       const { notifications } = this
@@ -226,6 +239,7 @@ export default {
     },
     /**
      * Error messages for input
+     * @param {String} key of input
      */
     errorsOfInput(key) {
       const { notifications } = this

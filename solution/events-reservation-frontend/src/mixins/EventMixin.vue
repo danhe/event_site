@@ -15,7 +15,7 @@
         notifications: {
           errors: [],
           success: [],
-          infos: []
+          infos: [],
         },
         /**
          * Priavte variable:
@@ -26,7 +26,6 @@
       
     },
     created() {
-      console.log(process.env)
       // Create private instance of axios with specific configurations
       this.$_eventMixin_instance = axios.create({
         baseURL: process.env.VUE_APP_API_ENDPOINT,

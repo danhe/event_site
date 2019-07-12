@@ -113,7 +113,7 @@ export default {
      */
     inputComponent: {
       type: String,
-      default: 'input'
+      default: 'input',
     },
   },
   computed: {
