@@ -4,36 +4,150 @@
       All events
     </h2>
 
-    <EventCardsList 
-      class="events-list"
-      :events="events"
-    />
+    <div class="events-list">
+      <BaseSelect
+        v-model="search.by"
+        label="Search by"
+        :options="searchByOptions"
+        @update="onUpdateSearchBy"
+      />
+
+      <BaseInput 
+        v-model="search.text"
+        placeholder="search..."
+        :inline="true"
+        :type="dateSelected ? 'datetime-local' : 'text'"
+        datepickerType="date"
+        @input="filterEvents"
+        @update="filterEvents"
+      />
+
+      <BaseSpinner v-if="isLoading" />
+
+      <div 
+        class="empty-list"
+        v-else-if="emptyList"
+      >
+        No available events
+      </div>
+
+      <EventCardsList
+        v-else
+        :events="events" 
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import _isEmpty from 'lodash/isEmpty'
 
+import BaseInput from '@/components/core/BaseInput.vue'
+import BaseSpinner from '@/components/core/BaseSpinner.vue'
+import BaseSelect from '@/components/core/BaseSelect.vue'
 import EventCardsList from '@/components/EventCardsList.vue'
 import EventMixin from '@/mixins/EventMixin.vue'
+
+const SEARCH_BY_OPTIONS = [
+  { value: 'type' },
+  { value: 'date' },
+  { value: 'speaker' },
+  { value: 'location' },
+]
 
 export default {
   name: 'Event',
   components: {
+    BaseInput,
+    BaseSelect,
+    BaseSpinner,
     EventCardsList,
+  },
+  data() {
+    return {
+      /**
+       * Serach object, by and search text
+       */
+      search: {
+        by: SEARCH_BY_OPTIONS[0].value,
+        text: '',
+      },
+      /**
+       * Search by select options
+       */
+      searchByOptions: SEARCH_BY_OPTIONS,
+      /**
+       * debounce the input to delay the search after stopping input
+       */
+      debounce: null,
+    }
   },
   computed: {
     ...mapGetters({
       events: 'storedEvents',
     }),
+    /**
+     * If date is selected, indicator to display the datepicker
+     */
+    dateSelected() {
+      const { search } = this
+
+      return search.by === 'date'
+    },
+    /**
+     * Is is an empty events list
+     */
+    emptyList() {
+      const { events } = this
+
+      return _isEmpty(events)
+    }
   },
   mixins: [
     EventMixin,
   ],
+  /**
+   * Get events when creating the component
+   */
   async created(){
     const { getEvents } = this
 
-    await getEvents()
+    await getEvents({})
+  },
+  methods: {
+    /**
+     * Filter events by search text
+     * With a debounce to delay the search after stopped input
+     */
+    async filterEvents() {
+      const { getEvents, search, debounce } = this
+
+      clearTimeout(debounce)
+
+      this.debounce = setTimeout(async () => {
+        await getEvents(search)
+      }, 600)
+    },
+    /**
+     * When updating search by select
+     * @param {String} value of selected searchBy
+     */
+    async onUpdateSearchBy(value) {
+      const { getEvents, search } = this
+      const old_search_text = search.text
+
+      // Update the dqte
+      this.search = {
+        by: value,
+        text: '',
+      }
+
+      // When old input is not empty, we need to update the events list
+      if(old_search_text !== '') {
+        await getEvents(this.search)
+      }
+    },
   },
 }
 </script>
@@ -51,6 +165,10 @@ export default {
 
     .events-list {
       margin: 20px 20%
+
+      .empty-list {
+        margin-top: 20px
+      }
     }
   }
 </style>

@@ -38,7 +38,7 @@
             placeholder="Event's start time"
             type="datetime-local"
             :requiredOption="true"
-            :not-before="event.start_time"
+            :not-before="time_now"
             @update="updateStartTime"
             :hasError="hasErrorInput('start_time')"
             :errorMessage="errorsOfInput('start_time')"
@@ -181,6 +181,7 @@ export default {
        * Max possible participants when workshop
        */
       max_max_participants: MAX_NUMBER,
+      time_now: NOW,
     }
   },
   computed: {

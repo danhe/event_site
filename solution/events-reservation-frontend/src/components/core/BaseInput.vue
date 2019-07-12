@@ -1,8 +1,7 @@
 <template>
-  <div 
-    :class="[hasError ? 'error-input' : 'normal-input', 'base-input', `base-input-${$attrs.type}`]"
-  >
-    <BaseLabel 
+  <div :class="classObj">
+    <BaseLabel
+      v-if="label"
       :label="label"
       theme="important"
       :requiredOption="requiredOption"
@@ -12,9 +11,9 @@
       v-if="isADateInput"
       :value="value"
       lang="en" 
-      type="datetime" 
+      :type="datepickerType" 
       :required="requiredOption"
-      format="MM-DD-YYYY [at] HH:mm"
+      :format="datepickerFormat"
       :not-before="notBefore"
       @input="handleDatepickerInput"
     />
@@ -44,9 +43,15 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import DatePicker from 'vue2-datepicker'
 
 import BaseLabel from '@/components/core/BaseLabel.vue'
+
+const FORMATS = {
+  datetime: 'MM-DD-YYYY [at] HH:mm',
+  date: 'MM-DD-YYYY',
+}
 
 export default {
   name: 'BaseInput',
@@ -115,6 +120,14 @@ export default {
       type: String,
       default: 'input',
     },
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+    datepickerType: {
+      type: String,
+      default: 'datetime',
+    },
   },
   computed: {
     /**
@@ -124,8 +137,27 @@ export default {
       const { type } = this.$attrs
       return type === 'datetime-local'
     },
+    classObj() {
+      const { $attrs, hasError, inline } = this
+      
+      return [
+        'base-input',
+        `base-input-${$attrs.type}`,
+        hasError ? 'error-input' : 'normal-input',
+        inline ? 'display-inline' : 'display-block',
+      ]
+    },
+    /**
+     * Get datepicker format according to its type
+     */
+    datepickerFormat() {
+      const { datepickerType } = this
+
+      return _get(FORMATS, datepickerType)
+    },
   },
   methods: {
+    _get,
     /**
      * Callback method for input event
      */
@@ -144,6 +176,15 @@ export default {
 
 <style lang="stylus" scoped>
   .base-input {
+
+    &.display-block {
+      display: block
+    }
+
+    &.display-inline {
+      display: inline-block
+    }
+
     &.error-input{
 
       textarea, input, >>> .mx-input {
@@ -156,8 +197,7 @@ export default {
     }
 
     input, textarea {
-      display: block
-      width: 100%
+      width: calc(100% - 1.5em)
       padding: .375rem .75rem
       font-size: 1rem
       line-height: 1.5

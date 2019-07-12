@@ -41,7 +41,7 @@
        *  - if success, return the events list
        *  - if error, toggle error indicator to true
        */
-      getEvents() {
+      getEvents(searchParams) {
         const { 
           $_eventMixin_instance, 
           $_eventMixin_success, 
@@ -52,7 +52,9 @@
         resetMsgsAndErrs()
         this.isLoading = true
 
-        return $_eventMixin_instance.get('/events')
+        return $_eventMixin_instance.get('/events', {
+          params: searchParams,
+        })
         .then($_eventMixin_success)
         .catch($_eventMixin_error)
       },
