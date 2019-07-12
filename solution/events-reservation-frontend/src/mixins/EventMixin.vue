@@ -1,5 +1,6 @@
 <script>
   import axios from 'axios'
+  import { mapActions } from 'vuex'
   import _get from 'lodash/get'
 
   export default {
@@ -9,14 +10,6 @@
          * Loading indicator
          */
         isLoading: false,
-        /**
-         * Notifications list
-         */
-        notifications: {
-          errors: [],
-          success: [],
-          infos: [],
-        },
         /**
          * Priavte variable:
          *  axios instance
@@ -37,18 +30,26 @@
       })
     },
     methods: {
+      ...mapActions([
+        'addEvents',
+        'addErrors',
+        'addMessages',
+        'resetMsgsAndErrs',
+      ]),
       /**
        * Sending request to server to get the events
        *  - if success, return the events list
        *  - if error, toggle error indicator to true
        */
-      getEvents() {        
+      getEvents() {
         const { 
           $_eventMixin_instance, 
           $_eventMixin_success, 
           $_eventMixin_error,
+          resetMsgsAndErrs,
         } = this
 
+        resetMsgsAndErrs()
         this.isLoading = true
 
         return $_eventMixin_instance.get('/events')
@@ -61,13 +62,15 @@
        *  - if success, return the events list
        *  - if error, toggle error indicator to true
        */
-      createEvent(eventParam) {        
+      createEvent(eventParam) {
         const { 
           $_eventMixin_instance, 
           $_eventMixin_success, 
           $_eventMixin_error,
+          resetMsgsAndErrs,
         } = this
 
+        resetMsgsAndErrs()
         this.isLoading = true
 
         return $_eventMixin_instance.post('/events', eventParam)
@@ -80,10 +83,22 @@
        * @param {Object} response of the query sent in getEvents
        */
       $_eventMixin_success(response) {
+        const { addEvents, addMessages } = this
+
         this.isLoading = false
 
         const message = _get(response, 'data.message')
-        this.notifications.success = message
+        // add in store
+        if(message !== undefined) {
+          addMessages(message)
+        }
+
+        const events = _get(response, 'data.events')
+        // add in store
+        if(events !== undefined) {
+          addEvents(events)
+        }
+
 
         this.$router.push('/events')
       },
@@ -92,10 +107,11 @@
        * Update the errors liste
        */
       $_eventMixin_error(error) {
+        const { addErrors } = this
         this.isLoading = false
 
         const errors = _get(error, 'response.data.errors')
-        this.notifications.errors = errors
+        addErrors(errors)
       },
     },
   }
