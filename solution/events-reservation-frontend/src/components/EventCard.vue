@@ -33,10 +33,7 @@
             🗺{{ event.location }}
           </span>
           
-          <span
-            class="event-span"
-            v-if="event.location"
-          >
+          <span class="event-span">
             📅 {{ displayDurantion }}
           </span>
         </div>
