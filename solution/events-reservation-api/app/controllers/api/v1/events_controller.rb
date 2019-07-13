@@ -25,10 +25,11 @@ class Api::V1::EventsController < Api::V1::BaseController
   #=========================
   private
 
+  # before action methode, to load resource
   def load_resource
     case params[:action].to_sym
     when :index
-      @event = events_by_params
+      @event = all_filterd_events
     when :create
       @event = Event.new(create_params)
     end
@@ -38,19 +39,26 @@ class Api::V1::EventsController < Api::V1::BaseController
     not_found!
   end
 
-  def events_by_params
+  # Get events according to the params
+  # If having filters, filter the events with params
+  # If not, get all events
+  def all_filterd_events
     return Event.all if params[:text].blank?
-
-    if params[:by].to_sym == :date
-      datetime = params[:text].to_date
-      return Event.all.where(
-        'start_time >= ? AND end_time <= ?',
-        datetime.beginning_of_day,
-        datetime.end_of_day
-      )
-    end
+    return filter_by_date if params[:by].to_sym == :date
 
     Event.all.where("#{params[:by]} LIKE ?", "%#{params[:text]}%")
+  end
+
+  # Filter events by date
+  def filter_by_date
+    start_at = params[:text].to_datetime
+    end_at = params[:end_of_day].to_datetime
+
+    Event.all.where(
+      'start_time >= ? AND end_time <= ?',
+      start_at,
+      end_at
+    )
   end
 
   def create_params

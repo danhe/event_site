@@ -102,7 +102,7 @@ export default {
       const { events } = this
 
       return _isEmpty(events)
-    }
+    },
   },
   mixins: [
     EventMixin,
@@ -123,10 +123,23 @@ export default {
     async filterEvents() {
       const { getEvents, search, debounce } = this
 
+      // By default, on send "search" to server as params
+      let searchParams = search
+
+      // When search by date, we need add a new params
+      //  end_of_day of filter date
+      // This permits to have a correct result with diffrent timezones
+      if(search.by === 'date') {
+        const end_of_day = new Date(new Date(search.text).setHours(23,59,59,999))
+        searchParams = Object.assign(searchParams, {
+          end_of_day: end_of_day,
+        })
+      }
+
       clearTimeout(debounce)
 
       this.debounce = setTimeout(async () => {
-        await getEvents(search)
+        await getEvents(searchParams)
       }, 600)
     },
     /**
