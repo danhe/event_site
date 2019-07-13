@@ -101,7 +101,6 @@
           addEvents(events)
         }
 
-
         this.$router.push('/events')
       },
       /**

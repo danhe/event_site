@@ -1,7 +1,9 @@
 <template>
-  <div class="event-card">
+  <router-link 
+    class="event-card"
+    :to="`/events/${event.id}`"
+  >
     <div class="body">
-
       <article class="content">
         <h4 class="important-text">
           {{ event.name }}
@@ -39,7 +41,7 @@
         </div>
       </article>
     </div>
-  </div> 
+  </router-link> 
 </template>
 
 <script>
@@ -51,17 +53,26 @@ export default {
     BaseTag,
   },
   props: {
+    /**
+     * Event object to display
+     */
     event: {
       type: Object,
       required: true,
     },
   },
   computed: {
+    /**
+     * Display the duration of event: comosite with start-time and end_time
+     */
     displayDurantion() {
       const { event } = this
 
       return new Date(event.start_time).toLocaleString() + ' -- ' + new Date(event.end_time).toLocaleString()
     },
+    /**
+     * Indicator to check if an event is a workshop
+     */
     isWorkShop(){
       const { event } = this
 
@@ -73,6 +84,7 @@ export default {
 
 <style lang="stylus" scoped>
 .event-card {
+  color: var(--color-black)
   text-align: left
   margin: 10px 0
   position: relative
