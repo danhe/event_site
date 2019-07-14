@@ -1,5 +1,8 @@
 <template>
-  <div class="base-radio-boxes">
+  <div 
+    class="base-radio-boxes"
+    :class="{'disabled-radios-boxes' : $attrs.disabled}"
+  >
     <BaseLabel 
       :label="label"
       theme="important"
@@ -16,6 +19,7 @@
         :name="name"
         :value="option.value"
         :checked="option.checked"
+        :disabled="$attrs.disabled"
         @change="handleRadioChange"
       />
 
@@ -66,6 +70,15 @@ export default {
 
 <style lang="stylus" scoped>
 .base-radio-boxes {
+  &.disabled-radios-boxes {
+    opacity: .7
+
+    input,
+    label {
+      cursor: not-allowed
+    }
+  }
+
   .base-radio {
     display: inline-block
     margin-right: 10px

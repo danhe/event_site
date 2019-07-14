@@ -10,6 +10,12 @@ class Api::V1::EventsController < Api::V1::BaseController
            each_serializer: Api::V1::EventSerializer, status: :ok
   end
 
+  # GET /api/v1/characters/:id
+  def show
+    render json: { events: @event },
+          each_serializer: Api::V1::EventSerializer, status: :ok
+  end
+  
   # POST /api/v1/events
   def create
     if @event.save
@@ -30,6 +36,8 @@ class Api::V1::EventsController < Api::V1::BaseController
     case params[:action].to_sym
     when :index
       @event = all_filterd_events
+    when :show
+      @event = Event.find_by_id(params[:id])
     when :create
       @event = Event.new(create_params)
     end

@@ -9,16 +9,14 @@
          * Loading indicator
          */
         isLoading: false,
+        errors: [],
+        messages: [],
         /**
          * Priavte variable:
          *  axios instance
          */
         $_eventMixin_instance: null,
-        events: [],
-        errors: [],
-        messages: [],
       }
-      
     },
     created() {
       // Create private instance of axios with specific configurations
@@ -32,10 +30,6 @@
       })
     },
     methods: {
-      resetMsgsAndErrs() {
-        this.errors = []
-        this.messages = []
-      },
       /**
        * Sending request to server to get the events
        *  - if success, return the events list
@@ -46,10 +40,8 @@
           $_eventMixin_instance, 
           $_eventMixin_success, 
           $_eventMixin_error,
-          resetMsgsAndErrs,
         } = this
 
-        resetMsgsAndErrs()
         this.isLoading = true
 
         return $_eventMixin_instance.get('/events', {
@@ -58,7 +50,24 @@
         .then($_eventMixin_success)
         .catch($_eventMixin_error)
       },
+            /**
+       * Sending request to server to get the events
+       *  - if success, return the events list
+       *  - if error, toggle error indicator to true
+       */
+      getEventById(id) {
+        const { 
+          $_eventMixin_instance, 
+          $_eventMixin_success, 
+          $_eventMixin_error,
+        } = this
 
+        this.isLoading = true
+
+        return $_eventMixin_instance.get(`/events/${id}`)
+        .then($_eventMixin_success)
+        .catch($_eventMixin_error)
+      },
       /**
        * Sending request to server to get the events
        *  - if success, return the events list
@@ -69,10 +78,8 @@
           $_eventMixin_instance, 
           $_eventMixin_success, 
           $_eventMixin_error,
-          resetMsgsAndErrs,
         } = this
 
-        resetMsgsAndErrs()
         this.isLoading = true
 
         return $_eventMixin_instance.post('/events', eventParam)
@@ -86,11 +93,7 @@
        */
       $_eventMixin_success(response) {
         this.isLoading = false
-
-        this.messages = _get(response, 'data.messages')
-        this.events = _get(response, 'data.events')
-
-        this.$router.push('/events')
+        return response
       },
       /**
        * Private method

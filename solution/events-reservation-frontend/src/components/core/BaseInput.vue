@@ -15,6 +15,7 @@
       :required="requiredOption"
       :format="datepickerFormat"
       :not-before="notBefore"
+      :disabled="$attrs.disabled"
       @input="handleDatepickerInput"
     />
 
@@ -96,7 +97,7 @@ export default {
      * Specifical attribute for datetime-local
      */
     notBefore: {
-      type: Date,
+      type: [Date, String],
       default: null,
     },
     /**
@@ -145,6 +146,7 @@ export default {
         `base-input-${$attrs.type}`,
         hasError ? 'error-input' : 'normal-input',
         inline ? 'display-inline' : 'display-block',
+        { 'disabled-input': $attrs.disabled },
       ]
     },
     /**
@@ -176,6 +178,16 @@ export default {
 
 <style lang="stylus" scoped>
   .base-input {
+
+    &.disabled-input {
+      opacity: .7
+
+      textarea, 
+      input, 
+      label {
+        cursor: not-allowed
+      }
+    }
 
     &.display-block {
       display: block

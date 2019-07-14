@@ -41,6 +41,7 @@
 
 <script>
 import _isEmpty from 'lodash/isEmpty'
+import _get from 'lodash/get'
 
 import BaseInput from '@/components/core/BaseInput.vue'
 import BaseSpinner from '@/components/core/BaseSpinner.vue'
@@ -80,6 +81,7 @@ export default {
        * debounce the input to delay the search after stopping input
        */
       debounce: null,
+      events: [],
     }
   },
   computed: {
@@ -109,7 +111,8 @@ export default {
   async created(){
     const { getEvents } = this
 
-    await getEvents({})
+    const response = await getEvents()
+    this.events = _get(response, 'data.events')
   },
   methods: {
     /**

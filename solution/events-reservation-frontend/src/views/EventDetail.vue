@@ -6,23 +6,41 @@
 
     <EventForm 
       :event="event"
-      :readonly="true"
+      :disabled="true"
     />
   </div>
 </template>
 
 <script>
+import _get from 'lodash/get'
+
 import EventForm from '@/components/EventForm.vue'
+import EventMixin from '@/mixins/EventMixin.vue'
 
 export default {
   name: 'EventDetail',
   components: {
     EventForm,
   },
-  computed: {
-    event() {
-      return []
-    },
+  data() {
+    return {
+      /**
+       * Event object to display
+       */
+      event: {},
+    }
+  },
+  mixins: [
+    EventMixin,
+  ],
+  /**
+   * Get event by its id when creating the component
+   */
+  async created(){
+    const { getEventById } = this
+
+    const response = await getEventById(this.$route.params.id)
+    this.event = _get(response, 'data.events')
   },
 }
 </script>

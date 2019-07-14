@@ -10,7 +10,7 @@
           :options="eventTypeOptions"
           :hasError="hasErrorInput('type')"
           :errorMessage="errorsOfInput('type')"
-          :readonly="readonly"
+          :disabled="disabled"
           @update="changeEventType"
         />
       </div>
@@ -23,7 +23,7 @@
           :requiredOption="true"
           :hasError="hasErrorInput('name')"
           :errorMessage="errorsOfInput('name')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
@@ -38,7 +38,7 @@
           :not-before="time_now"
           :hasError="hasErrorInput('start_time')"
           :errorMessage="errorsOfInput('start_time')"
-          :readonly="readonly"
+          :disabled="disabled"
           @update="updateStartTime"
         />
       </div>
@@ -55,7 +55,7 @@
           :not-after="end_time_not_after"
           :hasError="hasErrorInput('end_time')"
           :errorMessage="errorsOfInput('end_time')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
@@ -66,7 +66,7 @@
           placeholder="Speaker"
           :hasError="hasErrorInput('speaker')"
           :errorMessage="errorsOfInput('speaker')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
@@ -77,7 +77,7 @@
           placeholder="Location"
           :hasError="hasErrorInput('location')"
           :errorMessage="errorsOfInput('location')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
@@ -91,7 +91,7 @@
           :max="max_max_participants"
           :hasError="hasErrorInput('max_participants')"
           :errorMessage="errorsOfInput('max_participants')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
@@ -103,11 +103,14 @@
           placeholder="Description"
           :hasError="hasErrorInput('description')"
           :errorMessage="errorsOfInput('description')"
-          :readonly="readonly"
+          :disabled="disabled"
         />
       </div>
 
-      <div class="form-button">
+      <div 
+        class="form-button"
+        v-if="!disabled"
+      >
         <BaseButton theme="secondary">
             <router-link to="/events">
             Cancel
@@ -181,7 +184,7 @@ export default {
     /**
      * If is editable
      */
-    readonly: {
+    disabled: {
       type: Boolean,
       default: false, 
     },
@@ -233,10 +236,14 @@ export default {
      */
     async onCreateEvent($event) {
       $event.preventDefault()
+      this.errors = []
 
       const { event, createEvent } = this
 
-      await createEvent(event)
+      const response = await createEvent(event)
+      if (response) {
+        this.$router.push('/events')
+      }
     },
     /**
      * Check if the input with key has an error
