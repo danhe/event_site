@@ -54,6 +54,10 @@ class Api::V1::BaseController < ActionController::API
     api_error(status: :error, errors: exception.message)
   end
 
+  def unauthenticated!
+    api_error(status: :unauthenticated, errors: [])
+  end
+
   def api_error(status: 500, errors: [])
     puts errors.full_messages if errors.respond_to?(:full_messages)
 
