@@ -1,35 +1,24 @@
 <template>
-  <div class="login">
-    <h2 class="login-title important-text">
-      Login
+  <div class="invitation">
+    <h2 class="invitation-title important-text">
+      Invite your friends
     </h2>
     
     <form @submit="onSubmit">
       <div class="form-group">
         <BaseInput 
-          v-model="login.email"
+          v-model="email"
           label="Email"
           type="email"
           placeholder="Email"
-          :requiredOption="true"
-        />
-      </div>
-
-      <div class="form-group">
-        <BaseInput 
-          v-model="login.password"
-          label="Password"
-          placeholder="Password"
-          type='password'
-          :requiredOption="true"
         />
       </div>
 
       <BaseButton 
-        class="login-button"
+        class="invitation-button"
         type="submit"
       >
-        Login
+        invite
       </BaseButton>
     </form>
   </div>
@@ -38,10 +27,10 @@
 <script>
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
-import LoginMixin from '@/mixins/LoginMixin.vue'
+import axios from '@/utils/axios.js'
 
 export default {
-  name: "Login",
+  name: "Invitation",
   components: {
     BaseButton,
     BaseInput,
@@ -49,35 +38,38 @@ export default {
   data() {
     return {
       /**
-       * login obejct
+       * email to invite
        */
-      login: {},
+      email: '',
     }
   },
-  mixins: [
-    LoginMixin,
-  ],
   methods: {
     async onSubmit($event) {
-      const { authenticate, login } = this
-
       $event.preventDefault()
 
-      const response = await authenticate(login)
-      if (response) {
-        console.log(response)
-        this.$router.push('/events')
-      }
+      const { email } = this
+      const axiosInstance = axios.create()
+
+      axiosInstance.post('/invitations', {
+        email: email
+      })
+        .then((response) =>{
+          console.log(response)
+          return response
+        })
+        .catch((response) => {
+          console.error(response)
+        })
     },
   },
 }
 </script>
 
 <style lang="stylus" scoped>
-  .login {
+  .invitation {
     margin: 20px 30%
 
-    .login-title {
+    .invitation-title {
       text-align: center
       margin-bottom: 30px
     }
@@ -86,7 +78,7 @@ export default {
       margin-bottom: 10px
     }
 
-    .login-button {
+    .invitation-button {
       float: right
       margin-top: 30px
     }

@@ -12,8 +12,8 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   # GET /api/v1/characters/:id
   def show
-    render json: { events: @event },
-          each_serializer: Api::V1::EventSerializer, status: :ok
+    render json: @event,
+           serializer: Api::V1::EventSerializer, status: :ok
   end
   
   # POST /api/v1/events

@@ -2,13 +2,21 @@
 
 # SessionsController
 class Api::V1::SessionsController < Api::V1::BaseController
+  before_action :load_user
+
   def create
-    user = User.find_by_email(params[:email])
-    if user && user&.authenticate(params[:password])
-      session[:user_id] = user.id
-      api_success(message: 'login DONE')
+    if @user && @user&.authenticate(params[:password])
+      session[:user_id] = @user.id
+
+      render json: @user, serializer: Api::V1::UserSerializer, status: :ok
     else
       unauthenticated!
     end
+  end
+
+  private
+
+  def load_user
+    @user = User.find_by_email(params[:email])
   end
 end

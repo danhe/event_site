@@ -15,34 +15,33 @@ export default new Router({
     {
       path: '/events',
       name: 'Liste all events',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/Event.vue'),
     },
     {
       path: '/events/new',
       name: 'Create your events',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/EventCreation.vue'),
     },
     {
       path: '/events/:id',
       name: 'Event detail',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/EventDetail.vue'),
     },
     {
       path: '/login',
       name: 'Login',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/Login.vue'),
     },
+    {
+      path: '/invitation',
+      name: 'Invitation',
+      component: () => import(/* webpackChunkName: "about" */ './views/Invitation.vue'),
+    },
+    {
+      path: '/register/:token',
+      name: 'Register',
+      component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
+      props: true,
+    }
   ],
 })
