@@ -1,6 +1,5 @@
 <script>
   import axios from 'axios'
-  import { mapActions } from 'vuex'
   import _get from 'lodash/get'
 
   export default {
@@ -15,6 +14,9 @@
          *  axios instance
          */
         $_eventMixin_instance: null,
+        events: [],
+        errors: [],
+        messages: [],
       }
       
     },
@@ -30,12 +32,10 @@
       })
     },
     methods: {
-      ...mapActions([
-        'addEvents',
-        'addErrors',
-        'addMessages',
-        'resetMsgsAndErrs',
-      ]),
+      resetMsgsAndErrs() {
+        this.errors = []
+        this.messages = []
+      },
       /**
        * Sending request to server to get the events
        *  - if success, return the events list
@@ -85,21 +85,10 @@
        * @param {Object} response of the query sent in getEvents
        */
       $_eventMixin_success(response) {
-        const { addEvents, addMessages } = this
-
         this.isLoading = false
 
-        const message = _get(response, 'data.message')
-        // add in store
-        if(message !== undefined) {
-          addMessages(message)
-        }
-
-        const events = _get(response, 'data.events')
-        // add in store
-        if(events !== undefined) {
-          addEvents(events)
-        }
+        this.messages = _get(response, 'data.messages')
+        this.events = _get(response, 'data.events')
 
         this.$router.push('/events')
       },
@@ -111,8 +100,7 @@
         const { addErrors } = this
         this.isLoading = false
 
-        const errors = _get(error, 'response.data.errors')
-        addErrors(errors)
+        this.errors = _get(error, 'response.data.errors')
       },
     },
   }

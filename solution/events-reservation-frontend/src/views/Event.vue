@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import _isEmpty from 'lodash/isEmpty'
 
 import BaseInput from '@/components/core/BaseInput.vue'
@@ -84,9 +83,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      events: 'storedEvents',
-    }),
     /**
      * If date is selected, indicator to display the datepicker
      */

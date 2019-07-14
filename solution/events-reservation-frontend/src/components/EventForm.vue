@@ -124,7 +124,6 @@
 
 <script>
 import _filter from 'lodash/filter'
-import { mapGetters } from 'vuex'
 
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
@@ -186,12 +185,6 @@ export default {
       type: Boolean,
       default: false, 
     },
-  },
-  computed: {
-    ...mapGetters({
-      errors: 'storedErrors',
-      messages: 'storedMessages',
-    }),
   },
   methods: {
     /**

@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 import EventForm from '@/components/EventForm.vue'
 
 export default {
@@ -22,11 +20,8 @@ export default {
     EventForm,
   },
   computed: {
-    ...mapGetters(['getEventByID']),
     event() {
-      const { getEventByID, $route } = this
-      
-      return getEventByID($route.params.id)
+      return []
     },
   },
 }
