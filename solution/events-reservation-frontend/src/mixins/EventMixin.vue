@@ -1,6 +1,7 @@
 <script>
-  import axios from 'axios'
   import _get from 'lodash/get'
+
+  import axios from '@/utils/axios.js'
 
   export default {
     data() {
@@ -20,14 +21,7 @@
     },
     created() {
       // Create private instance of axios with specific configurations
-      this.$_eventMixin_instance = axios.create({
-        baseURL: process.env.VUE_APP_API_ENDPOINT,
-        timeout: 10000,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
+      this.$_eventMixin_instance = axios.create()
     },
     methods: {
       /**
@@ -100,7 +94,6 @@
        * Update the errors liste
        */
       $_eventMixin_error(error) {
-        const { addErrors } = this
         this.isLoading = false
 
         this.errors = _get(error, 'response.data.errors')
