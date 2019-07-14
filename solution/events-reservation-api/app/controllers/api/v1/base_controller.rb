@@ -1,4 +1,7 @@
-class Api::V1::BaseController < ActionController::API
+# frozen_string_literal: true
+
+# BaseController
+class Api::V1::BaseController < ApplicationController
   rescue_from ActionController::ParameterMissing do |e|
     missing_params!(e)
   end
@@ -55,7 +58,11 @@ class Api::V1::BaseController < ActionController::API
   end
 
   def unauthenticated!
-    api_error(status: :unauthenticated, errors: [])
+    api_error(status: 401, errors: 'password wrong')
+  end
+
+  def api_success(status: :ok, message: '')
+    render json: { message: message }, status: status
   end
 
   def api_error(status: 500, errors: [])
