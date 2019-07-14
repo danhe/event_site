@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @user.name || @user.email %></h1>
+    <p>
+      Join events-reservation right now!!!
+      <%= link_to('Continue', "http://localhost:8080/register/#{@user.token}") %>
+    </p>
+  </body>
+</html>
