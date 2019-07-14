@@ -51,14 +51,12 @@ export default {
       const axiosInstance = axios.create()
 
       axiosInstance.post('/invitations', {
-        email: email
+        email: email,
       })
         .then((response) =>{
-          console.log(response)
           return response
         })
         .catch((response) => {
-          console.error(response)
         })
     },
   },

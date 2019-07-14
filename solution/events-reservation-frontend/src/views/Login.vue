@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import LoginMixin from '@/mixins/LoginMixin.vue'
@@ -58,14 +60,18 @@ export default {
     LoginMixin,
   ],
   methods: {
+    ...mapActions([
+      'setUser',
+    ]),
     async onSubmit($event) {
-      const { authenticate, login } = this
+      const { authenticate, login, setUser } = this
 
       $event.preventDefault()
 
       const response = await authenticate(login)
       if (response) {
-        console.log(response)
+        setUser(response.data)
+
         this.$router.push('/events')
       }
     },

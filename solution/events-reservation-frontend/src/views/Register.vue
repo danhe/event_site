@@ -75,7 +75,6 @@ export default {
           }
         })
         .catch((response) => {
-          console.error(response)
         })
     },
   },

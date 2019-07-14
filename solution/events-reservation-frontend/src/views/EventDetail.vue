@@ -40,7 +40,7 @@ export default {
     const { getEventById } = this
 
     const response = await getEventById(this.$route.params.id)
-    this.event = _get(response, 'data.events')
+    this.event = _get(response, 'data')
   },
 }
 </script>
