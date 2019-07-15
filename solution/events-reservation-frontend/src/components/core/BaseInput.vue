@@ -28,7 +28,9 @@
       :value="value"
       :required="requiredOption"
       @input="handleInput"
-    />
+    >
+      {{ inputComponent == 'input' ? '' : value }}
+    </component>
 
     <BaseLabel 
       v-if="labelText"
@@ -218,6 +220,7 @@ export default {
       background-clip: padding-box
       border-radius: .25rem
       transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out
+      white-space: inherit
 
       &[type="radio"], &[type="checkbox"] {
         display: inline-block
