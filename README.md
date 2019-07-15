@@ -1,4 +1,7 @@
-# Intro
+
+# Events reservation
+
+## Intro
 
 We are building an event reservation application. For now we are building the simplest possible thing that can work.
 
@@ -9,13 +12,43 @@ There are two types of events:
 
 Events are not multi-day and can occur anytime in a 24hr day.
 
-## Notes
+Backend API: Ruby on rails API
+Frontend: VueJS
 
-Once you receive this bundle:
-- init the git repository in the root directory `.`
-- implement your solution in the `solution` directory following the tasks described in `level1`, `level2`, etc.
-- manage feature as git feature branches, e.g. `features/level1`, `features/level2`, etc
-- at the end of each feature, merge your code in `develop` branch
-- at the end of your work, push the code in a remote origin and provide us the link or make a .zip file of your local work (including the .git directory) and send it us via email.
+For more information, you can visit API doc [https://events-reservation-api.herokuapp.com/docs/index.html#introduction] here 
+And you can also take a look to its front-end[https://events-reservation-frontend.danhe.now.sh] project.
 
-Good luck with it and enjoy the process! ;)
+Your can see also in demo directory, there are some screencut of application.
+
+## Getting started
+
+### API
+
+1. Clone the project and Change directory to `solution/events-reservation-api/`. Install all gems:
+```
+    $ cd solution/events-reservation-api/
+    $ bundle install
+```
+2. Migration and seed the databse:
+```
+    $ rake db:migrate
+    $ rake db:seed
+```
+3. Start the web server:
+```
+    $ rails s
+```
+
+### Frontend
+
+1. Clone the project and Change directory to `solution/events-reservation-frontend/`. Install packages:
+```
+    $ cd solution/events-reservation-frontend/
+    $ yarn
+```
+2. Start the web server:
+```
+    $ yarn serve
+```
+
+

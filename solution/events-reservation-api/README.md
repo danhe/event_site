@@ -1,24 +1,38 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Events reservation
 
-Things you may want to cover:
+## Intro
 
-* Ruby version
+We are building an event reservation application. For now we are building the simplest possible thing that can work.
 
-* System dependencies
+There are two types of events:
 
-* Configuration
+* A Workshop, where during a time frame multiple people can attend (in parallel)
+* An Office Hour, where during a time frame individual people can attend (in serial)
 
-* Database creation
+Events are not multi-day and can occur anytime in a 24hr day.
 
-* Database initialization
+Backend API: Ruby on rails API
+Frontend: VueJS
 
-* How to run the test suite
+For more information, you can visit API doc [https://events-reservation-api.herokuapp.com/docs/index.html#introduction] here 
+And you can also take a look to its front-end[https://events-reservation-frontend.danhe.now.sh] project.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Getting started
 
-* Deployment instructions
+### API
 
-* ...
+1. Clone the project and Change directory to `solution/events-reservation-api/`. Install all gems:
+```
+    $ cd solution/events-reservation-api/
+    $ bundle install
+```
+2. Migration and seed the databse:
+```
+    $ rake db:migrate
+    $ rake db:seed
+```
+3. Start the web server:
+```
+    $ rails s
+```
