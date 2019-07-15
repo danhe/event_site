@@ -1,5 +1,4 @@
-class Api::V1::UsersController < Api::V1::BaseController
-
+class Api::V1::UsersController < Api::V1::BaseController  
   before_action :user_by_token
 
   def update

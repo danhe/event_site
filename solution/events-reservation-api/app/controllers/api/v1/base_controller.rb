@@ -2,6 +2,8 @@
 
 # BaseController
 class Api::V1::BaseController < ApplicationController
+  attr_accessor :current_user
+
   rescue_from ActionController::ParameterMissing do |e|
     missing_params!(e)
   end
