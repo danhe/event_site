@@ -8,8 +8,8 @@ Rails.application.routes.draw do
       resources :sessions, only: %i[create destroy]
       resources :invitations, only: %i[create]
 
-      resources :users, only: %i[update]
-      post '/register', to: 'users#update'
+      resources :users, only: %i[update show], param: 'token'
+      post '/register/:token', to: 'users#update'
 
       # Matches any undefined route to base#undefined_route to handle unknown routes
       get '*a', to: 'base#undefined_route'

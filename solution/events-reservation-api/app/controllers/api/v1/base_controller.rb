@@ -57,8 +57,8 @@ class Api::V1::BaseController < ApplicationController
     api_error(status: :error, errors: exception.message)
   end
 
-  def unauthenticated!
-    api_error(status: 401, errors: 'password wrong')
+  def unauthenticated!(errors = 'password wrong')
+    api_error(status: 401, errors: errors)
   end
 
   def api_success(status: :ok, json_data: {})

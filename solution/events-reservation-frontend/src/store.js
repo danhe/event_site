@@ -32,6 +32,14 @@ export default new Vuex.Store({
     isAdmin(state) {
       return _get(state, 'user.role') === 'admin'
     },
+     /**
+     * Get current user
+     * @param {Object} state of the application
+     * @return {String} name of user
+     */
+    userName(state) {
+      return _get(state, 'user.name') || _get(state, 'user.email')
+    },
   },
   mutations: {
     /**

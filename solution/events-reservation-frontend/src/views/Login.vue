@@ -12,6 +12,8 @@
           type="email"
           placeholder="Email"
           :requiredOption="true"
+          :hasError="hasErrorInput('email', errors)"
+          :errorMessage="errorsOfInput('email', errors)"
         />
       </div>
 
@@ -22,6 +24,8 @@
           placeholder="Password"
           type='password'
           :requiredOption="true"
+          :hasError="hasErrorInput('password', errors)"
+          :errorMessage="errorsOfInput('password', errors)"
         />
       </div>
 
@@ -41,6 +45,10 @@ import { mapActions } from 'vuex'
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import LoginMixin from '@/mixins/LoginMixin.vue'
+import {
+  hasErrorInput,
+  errorsOfInput,
+} from '@/utils/errors.js'
 
 export default {
   name: "Login",
@@ -60,6 +68,8 @@ export default {
     LoginMixin,
   ],
   methods: {
+    hasErrorInput,
+    errorsOfInput,
     ...mapActions([
       'setUser',
     ]),

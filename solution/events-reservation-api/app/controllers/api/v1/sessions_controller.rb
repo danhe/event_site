@@ -10,7 +10,10 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
       render json: @user, serializer: Api::V1::UserSerializer, status: :ok
     else
-      unauthenticated!
+      @user = User.new(email: params[:email])
+      @user.errors.add(:email, 'Your login maybe not right')
+      @user.errors.add(:password, 'Your login and password are not match')
+      unauthenticated!(@user.errors)
     end
   end
 

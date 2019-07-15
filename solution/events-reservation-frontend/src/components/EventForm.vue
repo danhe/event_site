@@ -8,8 +8,8 @@
           name="type"
           :requiredOption="true"
           :options="eventTypeOptions"
-          :hasError="hasErrorInput('type')"
-          :errorMessage="errorsOfInput('type')"
+          :hasError="hasErrorInput('type', errors)"
+          :errorMessage="errorsOfInput('type', errors)"
           :disabled="disabled"
           @update="changeEventType"
         />
@@ -21,8 +21,8 @@
           label="Event Name"
           placeholder="Event name"
           :requiredOption="true"
-          :hasError="hasErrorInput('name')"
-          :errorMessage="errorsOfInput('name')"
+          :hasError="hasErrorInput('name', errors)"
+          :errorMessage="errorsOfInput('name', errors)"
           :disabled="disabled"
         />
       </div>
@@ -36,8 +36,8 @@
           type="datetime-local"
           :requiredOption="true"
           :not-before="time_now"
-          :hasError="hasErrorInput('start_time')"
-          :errorMessage="errorsOfInput('start_time')"
+          :hasError="hasErrorInput('start_time', errors)"
+          :errorMessage="errorsOfInput('start_time', errors)"
           :disabled="disabled"
           @update="updateStartTime"
         />
@@ -53,8 +53,8 @@
           :requiredOption="true"
           :not-before="event.start_time"
           :not-after="end_time_not_after"
-          :hasError="hasErrorInput('end_time')"
-          :errorMessage="errorsOfInput('end_time')"
+          :hasError="hasErrorInput('end_time', errors)"
+          :errorMessage="errorsOfInput('end_time', errors)"
           :disabled="disabled"
         />
       </div>
@@ -64,8 +64,8 @@
           v-model="event.speaker"
           label="Speaker"
           placeholder="Speaker"
-          :hasError="hasErrorInput('speaker')"
-          :errorMessage="errorsOfInput('speaker')"
+          :hasError="hasErrorInput('speaker', errors)"
+          :errorMessage="errorsOfInput('speaker', errors)"
           :disabled="disabled"
         />
       </div>
@@ -75,8 +75,8 @@
           v-model="event.location"
           label="Location"
           placeholder="Location"
-          :hasError="hasErrorInput('location')"
-          :errorMessage="errorsOfInput('location')"
+          :hasError="hasErrorInput('location', errors)"
+          :errorMessage="errorsOfInput('location', errors)"
           :disabled="disabled"
         />
       </div>
@@ -89,8 +89,8 @@
           placeholder="Maxium participants"
           min="1"
           :max="max_max_participants"
-          :hasError="hasErrorInput('max_participants')"
-          :errorMessage="errorsOfInput('max_participants')"
+          :hasError="hasErrorInput('max_participants', errors)"
+          :errorMessage="errorsOfInput('max_participants', errors)"
           :disabled="disabled"
         />
       </div>
@@ -101,8 +101,8 @@
           input-component='textarea'
           label="Description"
           placeholder="Description"
-          :hasError="hasErrorInput('description')"
-          :errorMessage="errorsOfInput('description')"
+          :hasError="hasErrorInput('description', errors)"
+          :errorMessage="errorsOfInput('description', errors)"
           :disabled="disabled"
         />
       </div>
@@ -126,12 +126,14 @@
 </template>
 
 <script>
-import _filter from 'lodash/filter'
-
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import BaseRadioBoxes from '@/components/core/BaseRadioBoxes.vue'
 import EventMixin from '@/mixins/EventMixin.vue'
+import {
+  hasErrorInput,
+  errorsOfInput,
+} from '@/utils/errors.js'
 
 const WORK_SHOP = 'WorkShop'
 const OFFICE_HOUR = 'OfficeHour'
@@ -190,6 +192,8 @@ export default {
     },
   },
   methods: {
+    hasErrorInput,
+    errorsOfInput,
     /**
      * Update start time and update the min end time
      * @param {Date} selected_time of datetime picker
@@ -244,28 +248,6 @@ export default {
       if (response) {
         this.$router.push('/events')
       }
-    },
-    /**
-     * Check if the input with key has an error
-     * @param {String} key of input
-     */
-    hasErrorInput(key) {
-      const { errors } = this
-
-      return errors.map(error => error.pointer).includes(key)
-    },
-    /**
-     * Error messages for input
-     * @param {String} key of input
-     */
-    errorsOfInput(key) {
-      const { errors } = this
-
-      const errorsObject = _filter(errors, (error) => { 
-        return error.pointer === key
-      })
-
-      return errorsObject.map(error => error.detail).join('<br/>')
     },
   },
 }

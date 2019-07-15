@@ -41,7 +41,7 @@
             @click="onLogout"
             theme="positive"
           >
-            🔓
+            🔓{{ userName }}
           </BaseButton>
         </aside>
       </div>
@@ -68,6 +68,7 @@ export default {
     ...mapGetters([
       'isLoggedIn',
       'isAdmin',
+      'userName',
     ]),
   },
   mixins: [

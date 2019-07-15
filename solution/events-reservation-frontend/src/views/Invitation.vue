@@ -45,17 +45,27 @@ export default {
        * email to invite
        */
       email: '',
-      hasError: false
+      /**
+       * Invitation email input error indicator
+       */
+      hasError: false,
     }
   },
   computed: {
+    /**
+     * Error display message
+     */
     errorMessage() {
       const { hasError } = this 
 
       return hasError ? ERR_MSG : null
-    }
+    },
   },
   methods: {
+    /**
+     * When clicking on button to invite friend
+     * @param {Object} event of clicking
+     */
     async onSubmit($event) {
       $event.preventDefault()
 

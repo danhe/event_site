@@ -36,6 +36,10 @@
         })
         .catch($_eventMixin_error)
       },
+      /**
+       * Logout, make the store state user empty
+       * And make sure server side to empty the user
+       */
       logout() {
         const { 
           $_eventMixin_instance, 
@@ -43,6 +47,22 @@
         } = this
 
         return $_eventMixin_instance.delete('/sessions/user')
+        .then((response) =>{
+          return response
+        })
+        .catch($_eventMixin_error)
+      },
+      /**
+       * Get user by token to verify the token is always valid
+       * @param {String} token of user
+       */
+      getUserByToken(token) {
+        const { 
+          $_eventMixin_instance, 
+          $_eventMixin_error,
+        } = this
+
+        return $_eventMixin_instance.get(`/users/${token}`)
         .then((response) =>{
           return response
         })
