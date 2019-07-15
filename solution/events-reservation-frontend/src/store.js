@@ -47,7 +47,7 @@ export default new Vuex.Store({
      */
     storedUser(state) {
       return _get(state, 'user', {})
-    }
+    },
   },
   mutations: {
     /**

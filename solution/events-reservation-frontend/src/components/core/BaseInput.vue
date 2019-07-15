@@ -25,7 +25,7 @@
       :is="inputComponent"
       v-bind="$attrs"
       v-on="$listeners"
-      :value="value"
+      :value.prop="value"
       :required="requiredOption"
       @input="handleInput"
     >
@@ -71,7 +71,7 @@ export default {
      * Default value of input/textarea
      */
     value: {
-      type: [String, Number, Date, Object] ,
+      type: [String, Number, Date, Object],
       default: '',
     },
     /**

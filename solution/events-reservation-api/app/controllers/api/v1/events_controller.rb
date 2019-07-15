@@ -60,7 +60,7 @@ class Api::V1::EventsController < Api::V1::BaseController
     return Event.all if params[:text].blank?
     return filter_by_date if params[:by].to_sym == :date
 
-    Event.all.where("#{params[:by]} LIKE ?", "%#{params[:text]}%")
+    Event.where("lower(#{params[:by]}) LIKE ?", "%#{params[:text].downcase}%")
   end
 
   # Filter events by date

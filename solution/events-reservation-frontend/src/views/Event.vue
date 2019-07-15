@@ -158,7 +158,8 @@ export default {
 
       // When old input is not empty, we need to update the events list
       if(old_search_text !== '') {
-        await getEvents(this.search)
+        const response = await getEvents(this.search)
+        this.events = _get(response, 'data.events')
       }
     },
   },
