@@ -138,7 +138,8 @@ export default {
       clearTimeout(debounce)
 
       this.debounce = setTimeout(async () => {
-        await getEvents(searchParams)
+        const response = await getEvents(searchParams)
+        this.events = _get(response, 'data.events')
       }, 600)
     },
     /**

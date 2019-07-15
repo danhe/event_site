@@ -64,7 +64,7 @@ class Api::V1::EventsController < Api::V1::BaseController
     start_at = params[:text].to_datetime
     end_at = params[:end_of_day].to_datetime
 
-    Event.all.where(
+    Event.where(
       'start_time >= ? AND end_time <= ?',
       start_at,
       end_at

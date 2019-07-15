@@ -1,3 +1,3 @@
 class Api::V1::UserSerializer < Api::V1::BaseSerializer
-  attributes(*User.attribute_names.map(&:to_sym))
+  attributes :id, :email, :name, :role, :created_at, :updated_at
 end
