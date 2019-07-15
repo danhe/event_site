@@ -2,6 +2,7 @@
 
 # EventsController which declare the api methodes for events
 class Api::V1::EventsController < Api::V1::BaseController
+  before_action :authenticate_user!
   before_action :load_resource
 
   # GET /api/v1/characters

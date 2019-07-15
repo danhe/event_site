@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import _get from 'lodash/get'
 
 import BaseButton from '@/components/core/BaseButton.vue'
@@ -113,6 +113,11 @@ export default {
     const response = await getUserByToken(token)
     this.isValidToken = !!_get(response, 'data.is_valid_token')
   },
+  computed: {
+    ...mapGetters([
+      'storedUser',
+    ]),
+  },
   methods: {
     hasErrorInput,
     errorsOfInput,
@@ -126,8 +131,8 @@ export default {
     async onSubmit($event) {
       $event.preventDefault()
 
-      const { register, token, setUser } = this
-      const axiosInstance = axios.create()
+      const { register, token, setUser, storedUser } = this
+      const axiosInstance = axios.create(storedUser)
 
       axiosInstance.post(`/register/${token}`, {
         register: register,

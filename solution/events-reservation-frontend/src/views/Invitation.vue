@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import axios from '@/utils/axios.js'
@@ -52,6 +54,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'storedUser',
+    ]),
     /**
      * Error display message
      */
@@ -69,8 +74,8 @@ export default {
     async onSubmit($event) {
       $event.preventDefault()
 
-      const { email } = this
-      const axiosInstance = axios.create()
+      const { email, storedUser } = this
+      const axiosInstance = axios.create(storedUser)
 
       axiosInstance.post('/invitations', {
         email: email,

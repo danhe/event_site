@@ -20,13 +20,29 @@ class Api::V1::BaseController < ApplicationController
     routing_error!
   end
 
-  rescue_from Exception do |e|
-    rescue_exception!(e)
-  end
+  # rescue_from Exception do |e|
+  #   rescue_exception!(e)
+  # end
 
   # When no defined route, redirect here
   def undefined_route
     routing_error!
+  end
+
+  def authenticate_user!
+    token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
+
+    user_email = options.blank? ? nil : options[:email]
+    user = user_email && User.find_by(email: user_email)
+
+    unauthenticated_condition = !(user && ActiveSupport::SecurityUtils.secure_compare(user.token, token))
+    return unauthenticated! if unauthenticated_condition
+
+    self.current_user = user
+  end
+
+  def check_admin_access!
+    return unauthenticated!(errors: 'Only admin has access') unless current_user.admin?
   end
 
   # =====================

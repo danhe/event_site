@@ -40,6 +40,14 @@ export default new Vuex.Store({
     userName(state) {
       return _get(state, 'user.name') || _get(state, 'user.email')
     },
+      /**
+     * Get current user
+     * @param {Object} state of the application
+     * @return {String} name of user
+     */
+    storedUser(state) {
+      return _get(state, 'user', {})
+    }
   },
   mutations: {
     /**

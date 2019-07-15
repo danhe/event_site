@@ -1,5 +1,6 @@
 <script>
   import _get from 'lodash/get'
+  import { mapGetters } from 'vuex'
 
   import axios from '@/utils/axios.js'
 
@@ -19,9 +20,16 @@
         $_eventMixin_instance: null,
       }
     },
+    computed: {
+      ...mapGetters([
+        'storedUser',
+      ]),
+    },
     created() {
+      const { storedUser } = this
+
       // Create private instance of axios with specific configurations
-      this.$_eventMixin_instance = axios.create()
+      this.$_eventMixin_instance = axios.create(storedUser)
     },
     methods: {
       /**

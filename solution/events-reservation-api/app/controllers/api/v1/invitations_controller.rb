@@ -3,6 +3,8 @@
 # InvitationsController
 # All invitation methods here
 class Api::V1::InvitationsController < Api::V1::BaseController
+  before_action :authenticate_user!
+  before_action :check_admin_access!
   before_action :load_user
 
   def create
