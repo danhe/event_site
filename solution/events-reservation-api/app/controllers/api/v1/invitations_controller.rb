@@ -6,14 +6,19 @@ class Api::V1::InvitationsController < Api::V1::BaseController
   before_action :load_user
 
   def create
-    if @user
+    if @user.valid?
       MagicLinkMailer.magic_link_email(@user).deliver!
-      msg = 'Email has been sent'
+      json_data = {
+        message: 'Email has been sent successfully'
+      }
     else
-      msg = 'ALreay invited'
+      json_data = {
+        message: 'Email has been alreay invited',
+        email_warning: true
+      }
     end
 
-    api_success(message: msg)
+    api_success(json_data: json_data)
   end
 
   private

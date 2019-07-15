@@ -20,8 +20,11 @@ class Api::V1::EventsController < Api::V1::BaseController
   def create
     if @event.save
       api_success(
-        message: "The event #{@event.name} has been created successfully.",
-        status: 201
+        status: :created,
+        json_data: {
+          message: "The event #{@event.name} has been created successfully.",
+          is_created: true
+        }
       )
     else
       invalid_resource!(@event.errors)

@@ -8,7 +8,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     if @user.update_attributes(register_params)
       @user&.authenticate(register_params[:password])
 
-      api_success(message: 'Password has been set successfullt.')
+      api_success(json_data: {message: 'Password has been set successfullt.'})
     else
       invalid_resource!(@user.errors)
     end

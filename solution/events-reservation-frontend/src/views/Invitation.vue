@@ -11,6 +11,8 @@
           label="Email"
           type="email"
           placeholder="Email"
+          :hasError="hasError"
+          :errorMessage="errorMessage"
         />
       </div>
 
@@ -29,6 +31,8 @@ import BaseButton from '@/components/core/BaseButton.vue'
 import BaseInput from '@/components/core/BaseInput.vue'
 import axios from '@/utils/axios.js'
 
+const ERR_MSG = 'The email has been already invited or is alreay an user of application'
+
 export default {
   name: "Invitation",
   components: {
@@ -41,6 +45,14 @@ export default {
        * email to invite
        */
       email: '',
+      hasError: false
+    }
+  },
+  computed: {
+    errorMessage() {
+      const { hasError } = this 
+
+      return hasError ? ERR_MSG : null
     }
   },
   methods: {
@@ -54,7 +66,7 @@ export default {
         email: email,
       })
         .then((response) =>{
-          return response
+          this.hasError = response.data.email_warning
         })
         .catch(() => {
         })

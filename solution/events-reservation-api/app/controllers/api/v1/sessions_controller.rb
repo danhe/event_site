@@ -16,7 +16,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
   def destroy
     reset_session
-    api_success(message: 'Logout successfully')
+    api_success(json_data: {message: 'Logout successfully'})
   end
 
   private

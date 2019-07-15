@@ -61,8 +61,8 @@ class Api::V1::BaseController < ApplicationController
     api_error(status: 401, errors: 'password wrong')
   end
 
-  def api_success(status: :ok, message: '')
-    render json: { message: message }, status: status
+  def api_success(status: :ok, json_data: {})
+    render json: json_data, status: status
   end
 
   def api_error(status: 500, errors: [])
