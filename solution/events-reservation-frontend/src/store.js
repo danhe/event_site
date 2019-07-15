@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _get from 'lodash/get'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
      */
     user: {},
   },
+  plugins: [createPersistedState()],
   getters: {
     /**
      * Check if user is logged in

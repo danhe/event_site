@@ -74,7 +74,8 @@ export default {
             this.$router.push('/events')
           }
         })
-        .catch((response) => {
+        .catch(() => {
+
         })
     },
   },

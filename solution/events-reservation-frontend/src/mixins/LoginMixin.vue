@@ -36,6 +36,18 @@
         })
         .catch($_eventMixin_error)
       },
+      logout() {
+        const { 
+          $_eventMixin_instance, 
+          $_eventMixin_error,
+        } = this
+
+        return $_eventMixin_instance.delete('/sessions/user')
+        .then((response) =>{
+          return response
+        })
+        .catch($_eventMixin_error)
+      },
       /**
        * Private method
        * Update the errors liste

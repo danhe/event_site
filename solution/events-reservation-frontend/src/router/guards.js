@@ -51,6 +51,10 @@ function useRouterGuards(router, store) {
         return
       }
 
+      if(redirectIfNotAdmin(to, from, next, store)){
+        return 
+      }
+
       next()
     }
   )

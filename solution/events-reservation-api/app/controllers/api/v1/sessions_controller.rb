@@ -14,6 +14,11 @@ class Api::V1::SessionsController < Api::V1::BaseController
     end
   end
 
+  def destroy
+    reset_session
+    api_success(message: 'Logout successfully')
+  end
+
   private
 
   def load_user

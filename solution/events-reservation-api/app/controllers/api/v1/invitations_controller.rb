@@ -19,6 +19,6 @@ class Api::V1::InvitationsController < Api::V1::BaseController
   private
 
   def load_user
-    @user = User.find_by_email(params[:email]) || User.create(email: params[:email])
+    @user = User.create(email: params[:email])
   end
 end

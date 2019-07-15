@@ -21,10 +21,27 @@
         </aside>
 
         <aside class="nav-right">
-          <BaseButton>
+          <BaseButton
+            v-if="isAdmin && isLoggedIn"
+            theme="secondary"
+          >
+            <router-link to="/invitation">
+              Invite
+            </router-link>
+          </BaseButton>
+
+          <BaseButton v-if="isLoggedIn">
             <router-link to="/events/new">
               Create an event
             </router-link>
+          </BaseButton>
+
+          <BaseButton 
+            v-if="isLoggedIn"
+            @click="onLogout"
+            theme="positive"
+          >
+            🔓
           </BaseButton>
         </aside>
       </div>
@@ -37,12 +54,39 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 import BaseButton from '@/components/core/BaseButton.vue'
+import LoginMixin from '@/mixins/LoginMixin.vue'
 
 export default {
   name: 'MainLayout',
   components: {
     BaseButton,
+  },
+  computed: {
+    ...mapGetters([
+      'isLoggedIn',
+      'isAdmin',
+    ]),
+  },
+  mixins: [
+    LoginMixin,
+  ],
+  methods: {
+    ...mapActions([
+      'setUser',
+    ]),
+    async onLogout() {
+      const { logout, setUser } = this
+
+      const response = await logout()
+      if (response) {
+        setUser({})
+
+        this.$router.push('/login')
+      }
+    },
   },
 }
 </script>

@@ -74,6 +74,11 @@ export default {
       border: 1px solid var(--color-action)
     }
 
+    &.btn--positive {
+      background-color: var(--color-white)
+      color: var(--color-positive)
+    }
+    
     &.btn--disabled {
       opacity: 0.5
       cursor: not-allowed
