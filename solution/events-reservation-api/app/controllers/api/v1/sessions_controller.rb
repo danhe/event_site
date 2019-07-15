@@ -18,6 +18,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
   end
 
   def destroy
+    self.current_user = nil
     api_success(json_data: {message: 'Logout successfully'})
   end
 
