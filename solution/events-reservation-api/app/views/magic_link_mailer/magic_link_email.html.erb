@@ -7,7 +7,7 @@
     <h1>Hi <%= @user.name || @user.email %></h1>
     <p>
       Join events-reservation right now!!!
-      <%= link_to('Continue', "http://localhost:8080/register/#{@user.token}") %>
+      <%= link_to('Continue', "#{@application_url}/register/#{@user.token}") %>
     </p>
   </body>
 </html>
