@@ -11,7 +11,8 @@ class Api::V1::InvitationsController < Api::V1::BaseController
     if @user.valid?
       MagicLinkMailer.magic_link_email(@user).deliver!
       json_data = {
-        message: 'Email has been sent successfully'
+        message: 'Email has been sent successfully',
+        email_sent: true
       }
     else
       json_data = {
