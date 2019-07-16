@@ -10,7 +10,7 @@ class MagicLinkMailer < ApplicationMailer
   private
 
   def application_frontend_url
-    return 'https://events-reservation-frontend.danhe.now.sh/' if Rails.env.production?
+    return 'https://events-reservation-frontend.danhe.now.sh' if Rails.env.production?
 
     'http://localhost:8080'
   end

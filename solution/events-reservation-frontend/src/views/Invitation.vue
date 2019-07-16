@@ -3,6 +3,15 @@
     <h2 class="invitation-title important-text">
       Invite your friends
     </h2>
+
+    <div 
+      v-if="emailSent" 
+    >
+      You'll receive an email which contains un magic link in your email box.
+      <div class="accent-text">
+        (In production, the email will be sent to mailtrap. And in development it will be opened by browser)
+      </div>
+    </div>
     
     <form @submit="onSubmit">
       <div class="form-group">
@@ -51,6 +60,7 @@ export default {
        * Invitation email input error indicator
        */
       hasError: false,
+      emailSent: false,
     }
   },
   computed: {
@@ -82,6 +92,7 @@ export default {
       })
         .then((response) =>{
           this.hasError = response.data.email_warning
+          this.emailSent = response.data.email_sent
         })
         .catch(() => {
         })
