@@ -57,10 +57,10 @@ class Api::V1::EventsController < Api::V1::BaseController
   # If having filters, filter the events with params
   # If not, get all events
   def all_filterd_events
-    return Event.all if params[:text].blank?
+    return Event.all.order(created_at: :desc) if params[:text].blank?
     return filter_by_date if params[:by].to_sym == :date
 
-    Event.where("lower(#{params[:by]}) LIKE ?", "%#{params[:text].downcase}%")
+    Event.where("lower(#{params[:by]}) LIKE ?", "%#{params[:text].downcase}%").order(created_at: :desc)
   end
 
   # Filter events by date
@@ -72,7 +72,7 @@ class Api::V1::EventsController < Api::V1::BaseController
       'start_time >= ? AND end_time <= ?',
       start_at,
       end_at
-    )
+    ).order(created_at: :desc)
   end
 
   def create_params
